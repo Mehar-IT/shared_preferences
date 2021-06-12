@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferrences/model.dart';
 import 'package:shared_preferrences/sharedServices.dart';
+import 'package:get/get.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Shared Preference',
+      theme: ThemeData.light(),
+      darkTheme: ThemeData.dark(),
       home: Scaffold(
         appBar: AppBar(
           title: Text('Shared Preference'),
@@ -132,6 +135,9 @@ class _MyDataState extends State<MyData> {
               onChanged: (value) {
                 setState(() {
                   _theme = value;
+                  _theme
+                      ? Get.changeThemeMode(ThemeMode.dark)
+                      : Get.changeThemeMode(ThemeMode.light);
                 });
               }),
           TextButton(onPressed: _onPressed, child: Text('Save settings'))
