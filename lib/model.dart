@@ -1,6 +1,5 @@
 enum Gender { Male, Female, Others }
 enum Programming { Dart, Java, Json, Python }
-// enum ThemeValue { Light, Dark }
 
 class Setting {
   String controller;

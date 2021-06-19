@@ -60,10 +60,10 @@ class MyData extends StatefulWidget {
 
 class _MyDataState extends State<MyData> {
   var _preference = PreferencesServices();
+
   var _gender = Gender.Male;
   var _programming = Set<Programming>();
   var _theme = false;
-
   TextEditingController _controller = TextEditingController();
 
   void getData() async {
