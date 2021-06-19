@@ -14,7 +14,9 @@ class _MyAppState extends State<MyApp> {
 
   get() async {
     Setting obj = await PreferencesServices().getSettings();
-    _theme = obj.theme;
+    setState(() {
+      _theme = obj.theme;
+    });
   }
 
   @override
