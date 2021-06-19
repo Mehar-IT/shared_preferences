@@ -1,44 +1,67 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferrences/model.dart';
 import 'package:shared_preferrences/sharedServices.dart';
-import 'package:get/get.dart';
 
 void main() => runApp(MyApp());
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  bool _theme = true;
+
+  get() async {
+    Setting obj = await PreferencesServices().getSettings();
+    _theme = obj.theme;
+  }
+
+  @override
+  void initState() {
+    get();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Shared Preference',
-      theme: ThemeData.light(),
-      darkTheme: ThemeData.dark(),
+      theme: _theme ? ThemeData.dark() : ThemeData.light(),
       home: Scaffold(
         appBar: AppBar(
           title: Text('Shared Preference'),
         ),
-        body: MyData(),
+        body: MyData(
+          thememode: (value) {
+            setState(() {
+              _theme = value;
+            });
+          },
+        ),
       ),
     );
   }
 }
 
 class MyData extends StatefulWidget {
+  final ValueSetter thememode;
+  const MyData({
+    Key? key,
+    required this.thememode,
+  }) : super(key: key);
+
   @override
   _MyDataState createState() => _MyDataState();
 }
 
 class _MyDataState extends State<MyData> {
-  @override
-  void initState() {
-    getData();
-    super.initState();
-  }
-
   var _preference = PreferencesServices();
   var _gender = Gender.Male;
   var _programming = Set<Programming>();
   var _theme = false;
+
   TextEditingController _controller = TextEditingController();
 
   void getData() async {
@@ -49,6 +72,12 @@ class _MyDataState extends State<MyData> {
       _programming = setting.programming;
       _theme = setting.theme;
     });
+  }
+
+  @override
+  void initState() {
+    getData();
+    super.initState();
   }
 
   @override
@@ -68,7 +97,7 @@ class _MyDataState extends State<MyData> {
               groupValue: _gender,
               onChanged: (value) {
                 setState(() {
-                  _gender = value;
+                  _gender = value as Gender;
                 });
               }),
           RadioListTile(
@@ -77,7 +106,7 @@ class _MyDataState extends State<MyData> {
               groupValue: _gender,
               onChanged: (value) {
                 setState(() {
-                  _gender = value;
+                  _gender = value as Gender;
                 });
               }),
           RadioListTile(
@@ -86,7 +115,7 @@ class _MyDataState extends State<MyData> {
               groupValue: _gender,
               onChanged: (value) {
                 setState(() {
-                  _gender = value;
+                  _gender = value as Gender;
                 });
               }),
           CheckboxListTile(
@@ -135,9 +164,7 @@ class _MyDataState extends State<MyData> {
               onChanged: (value) {
                 setState(() {
                   _theme = value;
-                  _theme
-                      ? Get.changeThemeMode(ThemeMode.dark)
-                      : Get.changeThemeMode(ThemeMode.light);
+                  widget.thememode(_theme);
                 });
               }),
           TextButton(onPressed: _onPressed, child: Text('Save settings'))
@@ -148,10 +175,11 @@ class _MyDataState extends State<MyData> {
 
   void _onPressed() {
     var setting = Setting(
-        controller: _controller.text,
-        gender: _gender,
-        programming: _programming,
-        theme: _theme);
+      controller: _controller.text,
+      gender: _gender,
+      programming: _programming,
+      theme: _theme,
+    );
 
     _preference.setting(setting);
   }

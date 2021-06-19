@@ -14,17 +14,19 @@ class PreferencesServices {
 
   Future<Setting> getSettings() async {
     final pref = await SharedPreferences.getInstance();
+
     final _theme = pref.getBool('theme');
     final _controller = pref.getString('controller');
     final _gender = Gender.values[pref.getInt('gender') ?? 0];
     final _programming = pref
-        .getStringList('programming')
+        .getStringList('programming')!
         .map((e) => Programming.values[int.parse(e)])
         .toSet();
     return Setting(
-        controller: _controller,
-        gender: _gender,
-        programming: _programming,
-        theme: _theme);
+      controller: _controller!,
+      gender: _gender,
+      programming: _programming,
+      theme: _theme!,
+    );
   }
 }
