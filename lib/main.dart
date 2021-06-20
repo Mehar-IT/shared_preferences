@@ -10,7 +10,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  bool _theme = true;
+  bool _theme = false;
 
   get() async {
     Setting obj = await PreferencesServices().getSettings();
@@ -175,7 +175,7 @@ class _MyDataState extends State<MyData> {
     );
   }
 
-  void _onPressed() {
+  Future<void> _onPressed() async {
     var setting = Setting(
       controller: _controller.text,
       gender: _gender,
@@ -183,6 +183,6 @@ class _MyDataState extends State<MyData> {
       theme: _theme,
     );
 
-    _preference.setting(setting);
+    await _preference.setting(setting);
   }
 }

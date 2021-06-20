@@ -22,6 +22,7 @@ class PreferencesServices {
         .getStringList('programming')!
         .map((e) => Programming.values[int.parse(e)])
         .toSet();
+
     return Setting(
       controller: _controller!,
       gender: _gender,
