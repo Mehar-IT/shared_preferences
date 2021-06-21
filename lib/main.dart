@@ -96,7 +96,7 @@ class MyData extends StatelessWidget {
                 obj.theme.value = value;
               }),
           TextButton(
-              onPressed: () => obj.valueSetter(), child: Text('Save settings'))
+              onPressed: () => obj.valuesSetter(), child: Text('Save settings'))
         ],
       ),
     ));
